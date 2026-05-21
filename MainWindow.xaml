@@ -1,0 +1,315 @@
+﻿<Window x:Class="VideoPlayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VP" Height="350" Width="525">
+    <Window.Resources>
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border Background="Transparent"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="False" />
+            <Setter Property="OverridesDefaultStyle" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" Background="LightGray" Margin="0,0,-10,0"
+                                BorderThickness="1" BorderBrush="LightGray" Height="3"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="False" />
+            <Setter Property="OverridesDefaultStyle" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <StackPanel Orientation="Vertical">
+                            <Path Data="M32,20,30.66,25,27,28.66,22,30,17,28.66,13.34,25,12,20,13.34,15,17,11.34,22,10,27,11.34,30.66,15z"  
+                                  Stroke="LightGray" StrokeThickness="2" Fill="Gray"></Path>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="VideoSlider"  TargetType="Slider">
+            <Grid Height="40">                
+                <Border x:Name="TrackBackground" VerticalAlignment="Center" Margin="0,0,0,0" 
+                        BorderBrush="DarkGray" Background="Black" Height="5"  BorderThickness="1"/>
+                <Track  x:Name="PART_Track" Margin="-10,0,0,0"  >
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}" />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+        
+        <ControlTemplate x:Key="SoundSlider"  TargetType="Slider">
+            <Grid Height="35" Margin="0,0,0,0">
+                <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Margin="0,-5,0,0"                         
+                         StretchDirection="Both" Stretch="Fill" SnapsToDevicePixels="True">
+                    <Canvas Height="40" Width="100">
+                        <Polygon Points="0,40, 100, 40, 100, 0" Fill="DarkGray" />
+                    </Canvas>
+                </Viewbox>
+                <Track  x:Name="PART_Track" Margin="-10,0,0,0">
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}" />
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="Horizontal_Sound_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="Template" Value="{StaticResource SoundSlider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="Horizontal_Video_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="Template" Value="{StaticResource VideoSlider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ButtonGround">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="6,0,6,0"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="48"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Orange"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button" x:Key="SmallButtonGround">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="2,0,2,0"/>
+            <Setter Property="Width" Value="26"/>
+            <Setter Property="Height" Value="24"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Orange"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Path" x:Key="SmallButtonStyle">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Fill" Value="Gray"/>
+        </Style>
+        <Style TargetType="Path" x:Key="ButtonStyle">
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Fill" Value="Gray"/>
+        </Style>
+        <Style TargetType="Border" x:Key="ButtonBorder">
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="Present" Background="Black" AllowDrop="true">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        
+        <TextBox x:Name="TBMargin" Visibility="Collapsed" Height="30" VerticalAlignment="Bottom"/>
+        <Grid  x:Name="GridRotate" Grid.RowSpan="2"              
+               Background="Transparent"
+               Margin="{Binding ElementName=TBMargin, Path=Text}"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center">
+            <MediaElement Visibility="Visible" x:Name="MVideo">
+                
+            </MediaElement>
+            <Grid.RenderTransform>
+                <RotateTransform Angle="{Binding ElementName=TBAngle, Path=Value}"/>
+            </Grid.RenderTransform>
+        </Grid>
+
+        <Grid x:Name="TopPanel">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ListBox MinWidth="200" x:Name="VideoListView" IsTabStop="False"
+                      Background="Black" Opacity="0.5"
+                      Grid.Column="2">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="Black" Opacity="0.5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Style="{StaticResource SmallButtonGround}" ToolTip="Play"
+                                    Command="{Binding OnCommand}">
+                                <Button.Content>
+                                    <Path Style="{StaticResource ButtonStyle}" Data="M14.5,10,7,15.2,7,4.8z"/>
+                                </Button.Content>
+                            </Button>
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Title}" Foreground="LightGray"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        
+        <Grid Grid.Row="1" x:Name="UserPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Margin="20,0,0,0" VerticalAlignment="Top" Foreground="LightGray" x:Name="versionTxt"/>
+            <Slider Focusable="False" Style="{StaticResource Horizontal_Video_Slider}" 
+                    Grid.ColumnSpan="3"
+                    Margin="0,0,0,0" x:Name="ProgressSlider" Maximum="1000" />
+            
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Slider Grid.Column="1" Focusable="False" 
+                            Style="{StaticResource ResourceKey=Horizontal_Sound_Slider}" 
+                            Margin="0,12,0,0" x:Name="SoundSlider" Value="50" Maximum="100"/>
+                    <Button Grid.Column="0" Style="{StaticResource ButtonGround}" x:Name="SoundOff" ToolTip="Mute (M)">
+                        <Button.Content>
+                            <Path Style="{StaticResource ButtonStyle}" 
+                                  Data="M7.76,12.1,15.86,12.1,23.96,4,23.96,36.4,15.86,28.3,7.76,28.3z M11,15h4v10H11z
+                                        M26,15h2v10H26z M29,12h2v16H29z M32,9h2v22H32z"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="0" Style="{StaticResource ButtonGround}" x:Name="SoundOn" ToolTip="Mute (M)">
+                        <Button.Content>
+                            <Path Style="{StaticResource ButtonStyle}" 
+                                  Data="M7.76,12.1,15.86,12.1,23.96,4,23.96,36.4,15.86,28.3,7.76,28.3z  M11,15h4v10H11z   
+                                        M36,15,37,16,26,27,25,26z M26,16,27,15,36,26,35,27z"/>
+                        </Button.Content>
+                    </Button>
+                </Grid>                              
+            </Grid>
+
+            <StackPanel Grid.Column="1" Grid.Row="1"
+                        Background="Transparent" Orientation="Horizontal"
+                        Margin="0,0,0,10">
+                <Button Style="{StaticResource ButtonGround}" x:Name="PlayButton" ToolTip="Play (Space)">
+                    <Button.Content>
+                        <Path Style="{StaticResource ButtonStyle}" Data="M11,11,11,32,32,22z"/>
+                    </Button.Content>
+                </Button>
+                <Button Style="{StaticResource ButtonGround}" x:Name="PauseButton" ToolTip="Pause (Space)">
+                    <Button.Content>
+                        <Path Style="{StaticResource ButtonStyle}" Data="M11,11H18v22H11z M25,11H32v22H25z"/>
+                    </Button.Content>
+                </Button>
+                <Button Style="{StaticResource ButtonGround}" x:Name="StopButton" ToolTip="Stop">
+                    <Button.Content>
+                        <Path Style="{StaticResource ButtonStyle}" Data="M11,11h22v22H11z"/>
+                    </Button.Content>
+                </Button>
+                <Button Style="{StaticResource ButtonGround}" x:Name="RotateButton" ToolTip="Rotate (Shift)">
+                    <Path Style="{StaticResource ButtonStyle}" 
+                          Data="M11,9h22V12H11z M30,12h3v10H30z M28,22,32,30,35,22z M11,36h22V33H11z M11,23h3v10H11z M9,23,13,15,16,23z"/>
+                </Button>
+            </StackPanel>
+            <Grid Grid.Column="2" Grid.Row="1">
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Foreground="LightGray" TextWrapping="Wrap" Height="48" x:Name="DonateText" />
+                    <Slider x:Name="TBAngle" Maximum="360" Value="90" Height="48" VerticalAlignment="Top" Visibility="Collapsed" />
+                    <Button Grid.Column="1" Style="{StaticResource ButtonGround}" 
+                            x:Name="ShowList" ToolTip="Show list (L)" Visibility="Collapsed">
+                        <Button.Content>
+                            <Path Style="{StaticResource ButtonStyle}" 
+                                  Data="M19.19,7.19,33.62,7.19,33.62,34.74,19.19,34.74z
+                                        M16.56,4.56,36.24,4.56,36.24,37.37,16.56,37.37z
+                                        M21.15,9.81,31.65,9.81,31.65,12.44,21.15,12.44z
+                                        M21.15,16.37,31.65,16.37,31.65,19,21.15,19z
+                                        M21.15,22.93,31.65,22.93,31.65,25.56,21.15,25.56z
+                                        M21.15,29.49,31.65,29.49,31.65,32.12,21.15,32.12z
+                                        M13,5,3,20,13,35z"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="1" Style="{StaticResource ButtonGround}" 
+                            x:Name="HideList" ToolTip="Hide list (L)" Visibility="Visible">
+                        <Button.Content>
+                            <Path Style="{StaticResource ButtonStyle}" 
+                                  Data="M9.19,7.19,23.62,7.19,23.62,34.74,9.19,34.74z
+                                        M6.56,4.56,26.24,4.56,26.24,37.37,6.56,37.37z
+                                        M11.15,9.81,21.65,9.81,21.65,12.44,11.15,12.44z
+                                        M11.15,16.37,21.65,16.37,21.65,19,11.15,19z
+                                        M11.15,22.93,21.65,22.93,21.65,25.56,11.15,25.56z
+                                        M11.15,29.49,21.65,29.49,21.65,32.12,11.15,32.12z
+                                        M30,5,40,20,30,35z"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="2" Style="{StaticResource ButtonGround}" x:Name="SettingsButton" ToolTip="Settings (S)">
+                        <Button.Content>
+                            <Path Style="{StaticResource ButtonStyle}" Data="M31.75,20,34.56,23.36,33.26,26.5,28.89,26.89,28.5,31.26,25.36,32.56,22,29.75,18.64,32.56,15.5,31.26,15.11,26.89,10.74,26.5,9.44,23.36,12.25,20,9.44,16.64,10.74,13.5,15.11,13.11,15.5,8.74,18.64,7.44,22,10.25,25.36,7.44,28.5,8.74,28.89,13.11,33.26,13.5,34.56,16.64z
+M28.5,20,26.6,24.6,22,26.5,17.4,24.6,15.5,20,17.4,15.4,22,13.5,26.6,15.4z"/>
+                        </Button.Content>
+                    </Button>
+                </Grid>                
+            </Grid>
+            
+        </Grid>
+
+        <Grid Grid.Row="0" x:Name="SettingsPanel" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+        </Grid>
+    </Grid>
+</Window>
